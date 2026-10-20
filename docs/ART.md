@@ -1,6 +1,6 @@
 # Original environment art
 
-Four images were generated with the built-in ImageGen tool for this project. No source image, screenshot, character or asset from Bagh Negar was supplied to the generator. Raw generated originals are in `artwork/`; optimized WebP copies used by the game are in `app/src/main/assets/art/`. The font has its separate OFL license.
+Four environment images and one rose sprite were generated with the built-in ImageGen tool for this project. No source image, screenshot, character or asset from Bagh Negar was supplied to the generator. Raw generated originals are preserved locally in `artwork/`, outside the public source package; optimized WebP copies used by the game are included in `app/src/main/assets/art/`. The public project builds with these WebP copies and does not require the originals. The font has its separate OFL license.
 
 ## Garden prompt
 
