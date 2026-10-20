@@ -1,5 +1,9 @@
 # راز باغ فیروزه — Garden of Secrets
 
+نسخهٔ نخست یک بازی معمایی داستانی فارسی با تصاویر اختصاصی: کلید پشت گلدان را پیدا کن، انبار را بگرد، تبر را تعمیر کن و با کنار هم گذاشتن سرنخ‌ها به سند باغ برس. چهار محیط، سه قفل رمزدار، ۲۶ قدم کشف، کیف وسایل، ذخیرهٔ پیشرفت و سه بازسازی تزئینی دارد. این نسخه فقط فصل اول است و هنوز محصول تجاری کامل یا آزمایش‌شده روی گوشی واقعی نیست.
+
+[دریافت فایل نصب اندروید](https://github.com/ParsaBayat2014/GardenOfSecrets/releases/tag/v0.1.0) · [راهنمای انتشار در مایکت](docs/MYKET.md)
+
 An original offline Persian story puzzle game for Android. Chapter one follows Raha through a garden, gardener's shed, greenhouse and family archive: discover a hidden key, read clues, repair an axe, unlock three combination puzzles and recover the garden deed. Includes 26 discoveries, inventory, local saves, hints and three decorative renovations.
 
 This is a playable **0.1.0 first-chapter prototype**, not a full commercial game. It is not affiliated with or endorsed by Bagh Negar. Its story and environment art are original to this project; the existing environment illustrations were generated with AI. No visual parity with a commercial title is claimed.
@@ -20,4 +24,4 @@ This source and its signed prototype APK are public. No submission to Myket has 
 
 ## Assets and source
 
-The Vazirmatn font is distributed under the SIL Open Font License; see app/src/main/assets/art/OFL.txt. The source and original game assets have no additional license grant at present; public visibility alone does not grant redistribution rights. Third-party font licensing remains as supplied.
+The Vazirmatn font is distributed under the SIL Open Font License; see app/src/main/assets/art/OFL.txt. The source and original game assets have no additional license grant at present; public visibility alone does not grant redistribution rights. Third-party font licensing remains as supplied. Original image prompts and saved asset locations are in docs/ART.md. Store screenshot drafts are in store-assets/.

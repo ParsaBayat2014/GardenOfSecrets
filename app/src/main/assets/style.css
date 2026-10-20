@@ -3,5 +3,6 @@
 
 #world{z-index:0}#hud,#objective,#inventory,#returnBtn,#selection{z-index:2}#menu{z-index:3}
 
-.playing #world{inset:60px 0 90px}.playing #scenery{object-fit:contain}.playing #objective{top:8px;max-width:330px}.playing #returnBtn{top:8px;left:210px}@media(max-height:520px){.playing #world{inset:50px 0 85px}.playing #objective{top:7px;max-width:300px}.playing #returnBtn{left:175px;top:7px}}
+.playing #world{inset:0;background-size:cover;background-position:center}.playing #world:before{content:'';position:absolute;inset:0;background:#10382f77;backdrop-filter:blur(18px)}.playing #scenery{object-fit:contain}.playing #objective{top:8px;max-width:330px}.playing #returnBtn{top:75px;left:22px}@media(max-height:520px){.playing #objective{top:7px;max-width:300px}.playing #returnBtn{left:15px;top:58px}}#game:not(.playing) #hotspots{visibility:hidden}
 .hotspot .caption{pointer-events:none}
+.garden-roses{background:transparent url('art/roses.webp') center/contain no-repeat;filter:drop-shadow(0 4px 3px #0005);pointer-events:none}
