@@ -15,5 +15,5 @@ if($Offline){$buildArgs+='--offline'}
 & $gradleTool @buildArgs
 if($LASTEXITCODE -ne 0){throw 'Android build failed'}
 New-Item -ItemType Directory -Force -Path dist | Out-Null
-Copy-Item -LiteralPath "app\build\outputs\apk\$variant\app-$variant.apk" -Destination "dist\GardenOfSecrets-0.1.0-$variant.apk" -Force
-Get-FileHash -LiteralPath "dist\GardenOfSecrets-0.1.0-$variant.apk" -Algorithm SHA256
+Copy-Item -LiteralPath "app\build\outputs\apk\$variant\app-$variant.apk" -Destination "dist\GardenOfSecrets-0.2.0-$variant.apk" -Force
+Get-FileHash -LiteralPath "dist\GardenOfSecrets-0.2.0-$variant.apk" -Algorithm SHA256

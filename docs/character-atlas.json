@@ -1,0 +1,16 @@
+{
+  "raha": {
+    "frames": 12,
+    "cellWidth": 256,
+    "cellHeight": 320,
+    "width": 1024,
+    "height": 960
+  },
+  "friends": {
+    "frames": 8,
+    "cellWidth": 256,
+    "cellHeight": 320,
+    "width": 1024,
+    "height": 640
+  }
+}

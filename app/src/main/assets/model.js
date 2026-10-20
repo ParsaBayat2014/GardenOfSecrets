@@ -31,8 +31,23 @@ const tasks=[
  ['deed','archive','سند باغ را بردار','دوباره صندوق بازشده را بررسی کن.'],
  ['ending','archive','حقیقت باغ را بخوان','سند را روی میز تحریر وسط اتاق بگذار.']
 ];
-function fresh(){return {v:1,scene:'garden',flags:{},bag:[],stars:0,renovations:[],notes:[],sound:true,started:false};}
-function restore(raw){try{const s=JSON.parse(raw);if(!s||s.v!==1||!s.flags||!Array.isArray(s.bag))return fresh();const n=fresh();n.flags=Object.fromEntries(tasks.filter(t=>s.flags[t[0]]===true).map(t=>[t[0],true]));n.bag=[...new Set(s.bag.filter(i=>items[i]))];n.scene=['garden','shed','green','archive'].includes(s.scene)?s.scene:'garden';n.stars=Number.isFinite(s.stars)?Math.max(0,Math.min(100,s.stars)):0;n.renovations=Array.isArray(s.renovations)?[...new Set(s.renovations.filter(i=>['roses','lights','water'].includes(i)))]:[];n.notes=Array.isArray(s.notes)?s.notes.filter(x=>typeof x==='string').slice(0,40):[];n.sound=s.sound!==false;n.started=!!s.started;return n;}catch(e){return fresh();}}
+function fresh(){return {v:1,scene:'garden',flags:{},bag:[],stars:0,renovations:[],notes:[],sound:true,started:false,motion:true,storySeen:[],choices:{}};}
+function restore(raw){
+ try{
+  const s=JSON.parse(raw);if(!s||s.v!==1||!s.flags||!Array.isArray(s.bag))return fresh();const n=fresh();
+  n.flags=Object.fromEntries(tasks.filter(t=>s.flags[t[0]]===true).map(t=>[t[0],true]));
+  n.bag=[...new Set(s.bag.filter(i=>items[i]))];
+  const allowed={garden:true,shed:n.flags.shed,green:n.flags.letter,archive:n.flags.inner};
+  n.scene=allowed[s.scene]?s.scene:'garden';
+  n.stars=Number.isFinite(s.stars)?Math.max(0,Math.min(100,s.stars)):0;
+  n.renovations=Array.isArray(s.renovations)?[...new Set(s.renovations.filter(i=>['roses','lights','water'].includes(i)))]:[];
+  n.notes=Array.isArray(s.notes)?s.notes.filter(x=>typeof x==='string').slice(0,40):[];
+  n.sound=s.sound!==false;n.started=!!s.started;n.motion=s.motion!==false;
+  n.storySeen=Array.isArray(s.storySeen)?[...new Set(s.storySeen.filter(x=>typeof x==='string'&&/^[a-z]+$/.test(x)))].slice(0,30):[];
+  if(s.choices&&typeof s.choices==='object')for(const [key,valid] of Object.entries({intro:['promise','home'],mosaic:['workshop','garden']}))if(valid.includes(s.choices[key]))n.choices[key]=s.choices[key];
+  return n;
+ }catch(e){return fresh();}
+}
 function current(s){return tasks.find(t=>!s.flags[t[0]])||['done','garden','باغ، دوباره خانه شد','فصل اول به پایان رسید. می‌توانی باغ را بازسازی کنی و یادداشت‌ها را بخوانی.'];}
 function act(s,id,selected='',answer=''){
  const f=s.flags, has=i=>s.bag.includes(i), result={ok:false,text:'این وسیله اینجا کاربردی ندارد.'};
@@ -125,6 +140,7 @@ function act(s,id,selected='',answer=''){
  }
  return result;
 }
+function travel(s,target){const allowed={garden:true,shed:s.flags.shed,green:s.flags.letter,archive:s.flags.inner};if(!allowed[target])return {ok:false,text:'مسیر هنوز باز نشده است.'};s.scene=target;const flag=target==='green'?'green':target==='archive'?'archive':null;if(flag&&!s.flags[flag]){s.flags[flag]=true;s.stars++;}return {ok:true,travel:true,text:'به مسیر تازه رسیدی.'};}
 function renovate(s,id){if(!['roses','lights','water'].includes(id)||s.renovations.includes(id)||s.stars<3)return false;if(id==='water'&&!s.flags.valve)return false;s.stars-=3;s.renovations.push(id);return true;}
-const api={items,tasks,fresh,restore,current,act,renovate};if(typeof module!=='undefined')module.exports=api;root.GardenModel=api;
+const api={items,tasks,fresh,restore,current,act,travel,renovate};if(typeof module!=='undefined')module.exports=api;root.GardenModel=api;
 })(typeof window!=='undefined'?window:globalThis);

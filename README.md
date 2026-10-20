@@ -1,5 +1,7 @@
 # راز باغ فیروزه — Garden of Secrets
 
+نسخهٔ در حال توسعهٔ **۰٫۲٫۰** شخصیت‌های متحرک، سه شخصیت داستانی، ۱۴ صحنه با ۶۲ خط گفت‌وگو، انتخاب‌های رها و پایان افتتاح باغ را اضافه می‌کند. [جزئیات و وضعیت آزمایش نسخهٔ متحرک](docs/ANIMATED-0.2.md). APK نسخهٔ ۰٫۱٫۰ زیر، این تغییرات را ندارد؛ ساخت APK جدید فعلاً به‌علت خطای سرویس بررسی مجوز متوقف است.
+
 نسخهٔ نخست یک بازی معمایی داستانی فارسی با تصاویر اختصاصی: کلید پشت گلدان را پیدا کن، انبار را بگرد، تبر را تعمیر کن و با کنار هم گذاشتن سرنخ‌ها به سند باغ برس. چهار محیط، سه قفل رمزدار، ۲۶ قدم کشف، کیف وسایل، ذخیرهٔ پیشرفت و سه بازسازی تزئینی دارد. این نسخه فقط فصل اول است و هنوز محصول تجاری کامل یا آزمایش‌شده روی گوشی واقعی نیست.
 
 [دریافت فایل نصب اندروید](https://github.com/ParsaBayat2014/GardenOfSecrets/releases/tag/v0.1.0) · [راهنمای انتشار در مایکت](docs/MYKET.md)
@@ -25,3 +27,4 @@ This source and its signed prototype APK are public. No submission to Myket has 
 ## Assets and source
 
 The Vazirmatn font is distributed under the SIL Open Font License; see app/src/main/assets/art/OFL.txt. The source and original game assets have no additional license grant at present; public visibility alone does not grant redistribution rights. Third-party font licensing remains as supplied. Original image prompts and saved asset locations are in docs/ART.md. Store screenshot drafts are in store-assets/.
+
