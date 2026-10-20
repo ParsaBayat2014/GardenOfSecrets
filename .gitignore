@@ -1,0 +1,10 @@
+.gradle/
+**/build/
+local.properties
+signing/
+dist/
+*.log
+node_modules/
+.qa/
+tools/publish.py
+artwork/
