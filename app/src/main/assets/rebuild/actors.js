@@ -12,8 +12,8 @@ async function clips(){if(!clipsPromise)clipsPromise=Promise.all(['general','mov
 export class Actor {
  static async create(id){const [g,animations]=await Promise.all([loader.loadAsync('models/blender/'+id+'.glb'),clips()]);return new Actor(id,g.scene,animations,true);}
  constructor(id,rig,animations,prepared=false){
-  this.id=id;this.holder=new T.Group();this.holder.name=id;this.rig=rig;this.holder.add(rig);this.bones={};
-  rig.traverse(n=>{if(n.isBone)this.bones[n.name]=n;if(n.isMesh){n.castShadow=n.receiveShadow=true;if(!prepared)n.visible=false;}});
+  this.faceTime=0;this.faceMeshes=[];this.id=id;this.holder=new T.Group();this.holder.name=id;this.rig=rig;this.holder.add(rig);this.bones={};
+  rig.traverse(n=>{if(n.isBone)this.bones[n.name]=n;if(n.isMesh){if(n.morphTargetDictionary)this.faceMeshes.push(n);n.castShadow=n.receiveShadow=true;if(!prepared)n.visible=false;}});
   if(!prepared)this.paint(palettes[id]);this.mixer=new T.AnimationMixer(rig);this.actions=new Map(animations.map(c=>{const clip=c.clone();clip.tracks=clip.tracks.filter(t=>T.PropertyBinding.findNode(rig,t.name.slice(0,t.name.lastIndexOf('.'))));return[c.name,this.mixer.clipAction(clip)];}));this.play('Idle_A');this.holder.scale.setScalar(1.22);this.travel=null;this.action='Idle_A';this.holder.userData.actor=id;
  }
  bone(name){return this.bones[name.replace('.','')]||this.bones[name];}
@@ -66,5 +66,5 @@ export class Actor {
  face(position,dt=1){const angle=Math.atan2(position.x-this.holder.position.x,position.z-this.holder.position.z);let diff=T.MathUtils.euclideanModulo(angle-this.holder.rotation.y+Math.PI,Math.PI*2)-Math.PI;this.holder.rotation.y+=diff*Math.min(1,dt*9);}
  async walk(points){if(!points.length)return;this.play('Walking_A');return new Promise(resolve=>{this.travel={points:points.map(p=>new T.Vector3(p.x,0,p.z)),index:0,resolve};});}
  async perform(name='Interact',seconds=.8){this.play(name,true);await new Promise(resolve=>{this.pending={time:seconds,resolve};});this.play('Idle_A');}
- update(dt){this.mixer.update(dt);if(this.travel){const t=this.travel,point=t.points[t.index],dist=point.distanceTo(this.holder.position);this.face(point,dt);const speed=2.1;if(dist<speed*dt){this.holder.position.copy(point);t.index++;if(t.index>=t.points.length){this.travel=null;this.play('Idle_A');t.resolve();}}else this.holder.position.addScaledVector(point.clone().sub(this.holder.position).normalize(),speed*dt);}if(this.pending){this.pending.time-=dt;if(this.pending.time<=0){const p=this.pending;this.pending=null;p.resolve();}}}
+ update(dt){this.faceTime+=dt;const phase=this.faceTime%4.1,blink=Math.max(0,1-Math.abs(phase-3.8)/.095);for(const m of this.faceMeshes){const d=m.morphTargetDictionary;if(d.Blink!==undefined)m.morphTargetInfluences[d.Blink]=blink;if(d.Speak!==undefined)m.morphTargetInfluences[d.Speak]=this.talking?(Math.sin(this.faceTime*15)*.5+.5):0;}this.mixer.update(dt);if(this.travel){const t=this.travel,point=t.points[t.index],dist=point.distanceTo(this.holder.position);this.face(point,dt);const speed=2.1;if(dist<speed*dt){this.holder.position.copy(point);t.index++;if(t.index>=t.points.length){this.travel=null;this.play('Idle_A');t.resolve();}}else this.holder.position.addScaledVector(point.clone().sub(this.holder.position).normalize(),speed*dt);}if(this.pending){this.pending.time-=dt;if(this.pending.time<=0){const p=this.pending;this.pending=null;p.resolve();}}}
 }
