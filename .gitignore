@@ -8,3 +8,8 @@ node_modules/
 .qa/
 tools/publish.py
 artwork/
+.npm-cache/
+.gradle-native/
+.gradle-user/
+.android-user/
+/Install/
