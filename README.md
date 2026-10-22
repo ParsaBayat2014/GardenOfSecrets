@@ -1,6 +1,6 @@
 # راز باغ فیروزه — Garden of Secrets
 
-نسخهٔ ۰٫۴ محیط سه‌بعدی بلندر، سه شخصیت اسکلت‌دار، چهار محیط قابل‌گردش و فصل اول معماهای فارسی را دارد. فایل‌های قابل‌ویرایش در `art-source/blender` و رندرها در `art-source/renders` قرار دارند. اجرای گوشی از مدل‌های GLB صادرشده از بلندر استفاده می‌کند. ظاهر فعلی هنوز نمونهٔ توسعه است و هم‌سطح بودن با بازی تجاری ادعا نمی‌شود.
+نسخهٔ ۰٫۵ محیط سه‌بعدی بلندر، سه شخصیت اسکلت‌دار، چهار محیط قابل‌گردش و فصل اول معماهای فارسی را دارد. فایل‌های قابل‌ویرایش در `art-source/blender` و رندرها در `art-source/renders` قرار دارند. اجرای گوشی از مدل‌های GLB صادرشده از بلندر استفاده می‌کند. ظاهر فعلی هنوز نمونهٔ توسعه است و هم‌سطح بودن با بازی تجاری ادعا نمی‌شود.
 
 نسخهٔ نخست یک بازی معمایی داستانی فارسی با تصاویر اختصاصی: کلید پشت گلدان را پیدا کن، انبار را بگرد، تبر را تعمیر کن و با کنار هم گذاشتن سرنخ‌ها به سند باغ برس. چهار محیط، سه قفل رمزدار، ۲۶ قدم کشف، کیف وسایل، ذخیرهٔ پیشرفت و سه بازسازی تزئینی دارد. این نسخه فقط فصل اول است و هنوز محصول تجاری کامل یا آزمایش‌شده روی گوشی واقعی نیست.
 
@@ -9,6 +9,8 @@
 An original offline Persian story puzzle game for Android. Chapter one follows Raha through a garden, gardener's shed, greenhouse and family archive: discover a hidden key, read clues, repair an axe, unlock three combination puzzles and recover the garden deed. Includes 26 discoveries, inventory, local saves, hints and three decorative renovations.
 
 This is a playable **0.1.0 first-chapter prototype**, not a full commercial game. It is not affiliated with or endorsed by Bagh Negar. Its story and environment art are original to this project; the existing environment illustrations were generated with AI. No visual parity with a commercial title is claimed.
+
+[Blender 0.5 art and validation notes](docs/BLENDER-0.5.md)
 
 ## Play on Android
 

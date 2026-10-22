@@ -1,20 +1,21 @@
 import * as T from './vendor/three.module.js';
 import {GLTFLoader} from './vendor/GLTFLoader.js';
+import {retargetClips} from './retarget.js';
 
 const loader=new GLTFLoader(), palettes={raha:{skin:0xdca477,shirt:0xb64d34,pants:0x285a58,hair:0x30211d,boots:0x633c28},sohrab:{skin:0xc49168,shirt:0x718052,pants:0x72543c,hair:0xe8ddbd,boots:0x4a3024},saman:{skin:0xc99770,shirt:0x477d90,pants:0x9a7a50,hair:0x35251c,boots:0x51372b}};
 const sphere=new T.SphereGeometry(1,16,12),materials=new Map();
 function material(color){if(!materials.has(color))materials.set(color,new T.MeshStandardMaterial({color,roughness:.78}));return materials.get(color);}
 function oval(parent,color,pos,size){const m=new T.Mesh(sphere,material(color));m.position.set(...pos);m.scale.set(...size);m.castShadow=true;m.receiveShadow=true;parent.add(m);return m;}
 function tube(parent,color,points,radius){const path=new T.CatmullRomCurve3(points.map(p=>new T.Vector3(...p))),mesh=new T.Mesh(new T.TubeGeometry(path,20,radius,6,false),material(color));mesh.castShadow=true;parent.add(mesh);return mesh;}
-let clipsPromise;
+let clipsPromise,sourcePromise;
 async function clips(){if(!clipsPromise)clipsPromise=Promise.all(['general','movement'].map(n=>loader.loadAsync('models/'+n+'.glb'))).then(gs=>gs.flatMap(g=>g.animations));return clipsPromise;}
 
 export class Actor {
- static async create(id){const [g,animations]=await Promise.all([loader.loadAsync('models/blender/'+id+'.glb'),clips()]);return new Actor(id,g.scene,animations,true);}
+ static async create(id){sourcePromise||=loader.loadAsync('models/rig.glb');const [g,animations,source]=await Promise.all([loader.loadAsync('models/blender/'+id+'-premium.glb'),clips(),sourcePromise]);return new Actor(id,g.scene,retargetClips(animations,source.scene,g.scene),true);}
  constructor(id,rig,animations,prepared=false){
-  this.faceTime=0;this.faceMeshes=[];this.id=id;this.holder=new T.Group();this.holder.name=id;this.rig=rig;this.holder.add(rig);this.bones={};
+  this.floor=prepared?.12:0;this.faceTime=0;this.faceMeshes=[];this.id=id;this.holder=new T.Group();this.holder.name=id;this.rig=rig;this.holder.add(rig);this.bones={};
   rig.traverse(n=>{if(n.isBone)this.bones[n.name]=n;if(n.isMesh){if(n.morphTargetDictionary)this.faceMeshes.push(n);n.castShadow=n.receiveShadow=true;if(!prepared)n.visible=false;}});
-  if(!prepared)this.paint(palettes[id]);this.mixer=new T.AnimationMixer(rig);this.actions=new Map(animations.map(c=>{const clip=c.clone();clip.tracks=clip.tracks.filter(t=>T.PropertyBinding.findNode(rig,t.name.slice(0,t.name.lastIndexOf('.'))));return[c.name,this.mixer.clipAction(clip)];}));this.play('Idle_A');this.holder.scale.setScalar(1.22);this.travel=null;this.action='Idle_A';this.holder.userData.actor=id;
+  if(!prepared)this.paint(palettes[id]);this.mixer=new T.AnimationMixer(rig);this.actions=new Map(animations.map(c=>{const clip=c.clone();clip.tracks=clip.tracks.filter(t=>T.PropertyBinding.findNode(rig,t.name.slice(0,t.name.lastIndexOf('.'))));return[c.name,this.mixer.clipAction(clip)];}));this.play('Idle_A');this.holder.scale.setScalar(prepared?1.08:1.22);this.travel=null;this.action='Idle_A';this.holder.userData.actor=id;
  }
  bone(name){return this.bones[name.replace('.','')]||this.bones[name];}
  paint(c){
@@ -62,9 +63,9 @@ export class Actor {
   }
  }
  play(name,once=false){if(this.action===name&&!once)return;const next=this.actions.get(name)||this.actions.get('Idle_A');if(!next)return;const previous=this.current;next.reset().setEffectiveTimeScale(1).setEffectiveWeight(1);next.setLoop(once?T.LoopOnce:T.LoopRepeat,once?1:Infinity);next.clampWhenFinished=once;next.play();if(previous)previous.crossFadeTo(next,.22,false);this.current=next;this.action=name;this.holder.userData.animation=name;}
- place(x,z,rotation=0){this.holder.position.set(x,0,z);this.holder.rotation.y=rotation;}
+ place(x,z,rotation=0){this.holder.position.set(x,this.floor,z);this.holder.rotation.y=rotation;}
  face(position,dt=1){const angle=Math.atan2(position.x-this.holder.position.x,position.z-this.holder.position.z);let diff=T.MathUtils.euclideanModulo(angle-this.holder.rotation.y+Math.PI,Math.PI*2)-Math.PI;this.holder.rotation.y+=diff*Math.min(1,dt*9);}
- async walk(points){if(!points.length)return;this.play('Walking_A');return new Promise(resolve=>{this.travel={points:points.map(p=>new T.Vector3(p.x,0,p.z)),index:0,resolve};});}
+ async walk(points){if(!points.length)return;this.play('Walking_A');return new Promise(resolve=>{this.travel={points:points.map(p=>new T.Vector3(p.x,this.floor,p.z)),index:0,resolve};});}
  async perform(name='Interact',seconds=.8){this.play(name,true);await new Promise(resolve=>{this.pending={time:seconds,resolve};});this.play('Idle_A');}
  update(dt){this.faceTime+=dt;const phase=this.faceTime%4.1,blink=Math.max(0,1-Math.abs(phase-3.8)/.095);for(const m of this.faceMeshes){const d=m.morphTargetDictionary;if(d.Blink!==undefined)m.morphTargetInfluences[d.Blink]=blink;if(d.Speak!==undefined)m.morphTargetInfluences[d.Speak]=this.talking?(Math.sin(this.faceTime*15)*.5+.5):0;}this.mixer.update(dt);if(this.travel){const t=this.travel,point=t.points[t.index],dist=point.distanceTo(this.holder.position);this.face(point,dt);const speed=2.1;if(dist<speed*dt){this.holder.position.copy(point);t.index++;if(t.index>=t.points.length){this.travel=null;this.play('Idle_A');t.resolve();}}else this.holder.position.addScaledVector(point.clone().sub(this.holder.position).normalize(),speed*dt);}if(this.pending){this.pending.time-=dt;if(this.pending.time<=0){const p=this.pending;this.pending=null;p.resolve();}}}
 }
