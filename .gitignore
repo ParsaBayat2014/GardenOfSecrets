@@ -13,3 +13,6 @@ artwork/
 .gradle-user/
 .android-user/
 /Install/
+
+*.blend1
+art-source/blender/blockouts/

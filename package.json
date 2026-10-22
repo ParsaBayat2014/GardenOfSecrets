@@ -1,10 +1,11 @@
 {
   "name": "turquoise-garden-mystery",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "type": "commonjs",
   "scripts": {
     "test": "node tools/test-model.cjs && node tools/test-story.cjs && node tools/test-motion.cjs",
-    "test:ui": "node tools/test-animated.cjs"
+    "test:ui": "node tools/test-animated.cjs",
+    "test:rebuild": "node tools/test-rebuild-navigation.cjs && node tools/test-rebuild-animation.cjs && node tools/test-rebuild.cjs"
   }
 }

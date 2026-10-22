@@ -1,0 +1,20 @@
+{
+  "general.glb": {
+    "sha256": "aa111549e09ce0cc2a0f0092911ed83d5e4bf91807c2106339b44bde45d163d5",
+    "bytes": 400960,
+    "license": "CC0 \u2014 Kay Lousberg, KayKit Character Animations",
+    "source": "https://github.com/NoLimitNexus/game-models"
+  },
+  "movement.glb": {
+    "sha256": "f4601166eeac557c84ca50bfa4e24614aae0124c73e2bee488b1a9b4d327ee06",
+    "bytes": 253320,
+    "license": "CC0 \u2014 Kay Lousberg, KayKit Character Animations",
+    "source": "https://github.com/NoLimitNexus/game-models"
+  },
+  "rig.glb": {
+    "sha256": "368a4c0733280bc810c004b81f31408f43c00e307cf914061e80f192ba25685b",
+    "bytes": 420044,
+    "license": "CC0 \u2014 Kay Lousberg, KayKit Character Animations",
+    "source": "https://github.com/NoLimitNexus/game-models"
+  }
+}
