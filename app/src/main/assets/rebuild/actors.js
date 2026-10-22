@@ -10,11 +10,11 @@ let clipsPromise;
 async function clips(){if(!clipsPromise)clipsPromise=Promise.all(['general','movement'].map(n=>loader.loadAsync('models/'+n+'.glb'))).then(gs=>gs.flatMap(g=>g.animations));return clipsPromise;}
 
 export class Actor {
- static async create(id){const [g,animations]=await Promise.all([loader.loadAsync('models/blender/'+id+'.glb'),clips()]);return new Actor(id,g.scene,animations);}
- constructor(id,rig,animations){
+ static async create(id){const [g,animations]=await Promise.all([loader.loadAsync('models/blender/'+id+'.glb'),clips()]);return new Actor(id,g.scene,animations,true);}
+ constructor(id,rig,animations,prepared=false){
   this.id=id;this.holder=new T.Group();this.holder.name=id;this.rig=rig;this.holder.add(rig);this.bones={};
-  rig.traverse(n=>{if(n.isBone)this.bones[n.name]=n;if(n.isMesh){n.castShadow=n.receiveShadow=true;}});
-  this.mixer=new T.AnimationMixer(rig);this.actions=new Map(animations.map(c=>{const clip=c.clone();clip.tracks=clip.tracks.filter(t=>T.PropertyBinding.findNode(rig,t.name.slice(0,t.name.lastIndexOf('.'))));return[c.name,this.mixer.clipAction(clip)];}));this.play('Idle_A');this.holder.scale.setScalar(1.22);this.travel=null;this.action='Idle_A';this.holder.userData.actor=id;
+  rig.traverse(n=>{if(n.isBone)this.bones[n.name]=n;if(n.isMesh){n.castShadow=n.receiveShadow=true;if(!prepared)n.visible=false;}});
+  if(!prepared)this.paint(palettes[id]);this.mixer=new T.AnimationMixer(rig);this.actions=new Map(animations.map(c=>{const clip=c.clone();clip.tracks=clip.tracks.filter(t=>T.PropertyBinding.findNode(rig,t.name.slice(0,t.name.lastIndexOf('.'))));return[c.name,this.mixer.clipAction(clip)];}));this.play('Idle_A');this.holder.scale.setScalar(1.22);this.travel=null;this.action='Idle_A';this.holder.userData.actor=id;
  }
  bone(name){return this.bones[name.replace('.','')]||this.bones[name];}
  paint(c){
