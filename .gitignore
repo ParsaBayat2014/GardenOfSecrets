@@ -16,3 +16,13 @@ artwork/
 
 *.blend1
 art-source/blender/blockouts/
+
+art-source/vendor/*.zip
+art-source/vendor/*original.blend
+
+art-source/renders/*evaluation.png
+
+tools/blender/inspect-studio*.py
+tools/blender/evaluate-studio*.py
+tools/blender/fix-mobile-uv.py
+tools/blender/inspect-mobile-uv.py

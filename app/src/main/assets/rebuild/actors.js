@@ -11,7 +11,7 @@ let clipsPromise,sourcePromise;
 async function clips(){if(!clipsPromise)clipsPromise=Promise.all(['general','movement'].map(n=>loader.loadAsync('models/'+n+'.glb'))).then(gs=>gs.flatMap(g=>g.animations));return clipsPromise;}
 
 export class Actor {
- static async create(id){sourcePromise||=loader.loadAsync('models/rig.glb');const [g,animations,source]=await Promise.all([loader.loadAsync('models/blender/'+id+'-premium.glb'),clips(),sourcePromise]);return new Actor(id,g.scene,retargetClips(animations,source.scene,g.scene),true);}
+ static async create(id){sourcePromise||=loader.loadAsync('models/rig.glb');const [g,animations,source]=await Promise.all([loader.loadAsync('models/blender/'+(id==='raha'?'raha-studio':id+'-premium')+'.glb'),clips(),sourcePromise]);return new Actor(id,g.scene,retargetClips(animations,source.scene,g.scene),true);}
  constructor(id,rig,animations,prepared=false){
   this.floor=prepared?.12:0;this.faceTime=0;this.faceMeshes=[];this.id=id;this.holder=new T.Group();this.holder.name=id;this.rig=rig;this.holder.add(rig);this.bones={};
   rig.traverse(n=>{if(n.isBone)this.bones[n.name]=n;if(n.isMesh){if(n.morphTargetDictionary)this.faceMeshes.push(n);n.castShadow=n.receiveShadow=true;if(!prepared)n.visible=false;}});

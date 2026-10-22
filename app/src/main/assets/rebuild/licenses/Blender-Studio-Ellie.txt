@@ -1,0 +1,15 @@
+Ellie Pose Library © Blender Studio — CC-BY.
+
+Source listing: https://www.blender.org/download/demo-files/#assets
+Official downloadable bundle:
+https://download.blender.org/demo/asset-bundles/ellie-pose-library/ellie-pose-library-v2.0.0.zip
+Source character: https://studio.blender.org/characters/ellie/v1/
+Creative Commons Attribution: https://creativecommons.org/licenses/by/
+
+The original bundle's README Animation and README Pose Library both state:
+License: CC-BY
+The official Blender demo-file listing identifies Ellie Pose Library v2.0.0 as CC-BY and credits Blender Studio. This is not CC0 and is not an original character sculpt by the Garden of Secrets developer.
+
+Garden of Secrets adaptation for Raha: teal clothing color adjustment, removal of source pins and earrings, baked color and tangent normal atlases, simplified skeletal weights, game skeleton fitting and captured facial pose morphs. These modifications are separate from the original asset. No endorsement by Blender Studio is implied. Preserve this attribution and source/license links when redistributing this adapted asset, Blender sources, game APK or renders.
+
+The surrounding garden, story and game code retain their respective project notices. KayKit animations and Three.js retain their separately supplied licenses.
